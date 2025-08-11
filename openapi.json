@@ -6,8 +6,8 @@
     "description": "API oficial da IA Danilo para integração com ações personalizadas da DFranchise Lab."
   },
   "servers": [
-    { "url": "https://example.com", "description": "placeholder para validação; troque pela URL real da API" }
-  ],
+  { "url": "https://webhook.site/f7220849-4800-45b7-b4f0-eac01b7a63ad" }
+]
   "paths": {
     "/axon/execute": {
       "post": {

@@ -1,0 +1,133 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IA Danilo API",
+    "version": "1.0.0",
+    "description": "Especificação mínima e válida para integrar a IA Danilo via Ações."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/axon/execute": {
+      "post": {
+        "operationId": "executeProtocol",
+        "summary": "Executa um protocolo AXON",
+        "description": "Recebe comandos AXON.execute assinados pela IA DANILO.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "protocol",
+                  "payload"
+                ],
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "example": "CEO_INIT_PROTOCOL"
+                  },
+                  "payload": {
+                    "type": "object",
+                    "required": [
+                      "initiator"
+                    ],
+                    "properties": {
+                      "initiator": {
+                        "type": "string",
+                        "example": "IA DANILO"
+                      },
+                      "data": {
+                        "type": "object"
+                      }
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": false
+              },
+              "examples": {
+                "ex": {
+                  "value": {
+                    "protocol": "CEO_INIT_PROTOCOL",
+                    "payload": {
+                      "initiator": "IA DANILO",
+                      "data": {
+                        "teste": "ok"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Protocolo processado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "ACK",
+                        "REJECT",
+                        "ERROR"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "2025-08-11T14:00:00Z"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida"
+          },
+          "401": {
+            "description": "Token ausente"
+          },
+          "403": {
+            "description": "Token inválido"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

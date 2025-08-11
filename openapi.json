@@ -6,75 +6,76 @@
     "description": "API oficial da IA Danilo para integração com ações personalizadas da DFranchise Lab."
   },
   "servers": [
-    {
-      "url": "https://suaapi.dominio.com",
-      "description": "Servidor principal da IA Danilo"
-    }
+    { "url": "https://example.com", "description": "placeholder para validação; troque pela URL real da API" }
   ],
   "paths": {
-    "/executar-acao": {
+    "/axon/execute": {
       "post": {
-        "summary": "Executa uma ação na IA Danilo",
-        "description": "Envia um comando ou tarefa para execução pela IA Danilo.",
-        "operationId": "executarAcao",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "operationId": "executeProtocol",
+        "summary": "Executa um protocolo AXON",
+        "description": "Recebe comandos AXON.execute assinados pela IA DANILO.",
+        "security": [ { "bearerAuth": [] } ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["protocol", "payload"],
                 "properties": {
-                  "comando": {
-                    "type": "string",
-                    "description": "O comando ou tarefa a ser executada"
-                  },
-                  "parametros": {
+                  "protocol": { "type": "string", "example": "CEO_INIT_PROTOCOL" },
+                  "payload": {
                     "type": "object",
-                    "description": "Parâmetros adicionais para a execução"
+                    "required": ["initiator"],
+                    "properties": {
+                      "initiator": { "type": "string", "example": "IA DANILO" },
+                      "data": { "type": "object" }
+                    },
+                    "additionalProperties": true
                   }
                 },
-                "required": [
-                  "comando"
-                ]
+                "additionalProperties": false
+              },
+              "examples": {
+                "ex": {
+                  "value": {
+                    "protocol": "CEO_INIT_PROTOCOL",
+                    "payload": { "initiator": "IA DANILO", "data": { "teste": "ok" } }
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Ação executada com sucesso",
+            "description": "Protocolo processado",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "resultado": {
-                      "type": "string"
-                    }
-                  }
+                    "status": { "type": "string", "enum": ["ACK", "REJECT", "ERROR"] },
+                    "message": { "type": "string" },
+                    "timestamp": { "type": "string", "example": "2025-08-11T14:00:00Z" }
+                  },
+                  "required": ["status"]
                 }
               }
             }
-          }
+          },
+          "400": { "description": "Requisição inválida" },
+          "401": { "description": "Token ausente" },
+          "403": { "description": "Token inválido" }
         }
       }
     }
   },
   "components": {
+    "schemas": {},
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
     }
-  }
+  },
+  "security": [ { "bearerAuth": [] } ]
 }

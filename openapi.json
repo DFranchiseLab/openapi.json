@@ -1,0 +1,80 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IA Danilo API",
+    "version": "1.0.0",
+    "description": "API oficial da IA Danilo para integração com ações personalizadas da DFranchise Lab."
+  },
+  "servers": [
+    {
+      "url": "https://suaapi.dominio.com",
+      "description": "Servidor principal da IA Danilo"
+    }
+  ],
+  "paths": {
+    "/executar-acao": {
+      "post": {
+        "summary": "Executa uma ação na IA Danilo",
+        "description": "Envia um comando ou tarefa para execução pela IA Danilo.",
+        "operationId": "executarAcao",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comando": {
+                    "type": "string",
+                    "description": "O comando ou tarefa a ser executada"
+                  },
+                  "parametros": {
+                    "type": "object",
+                    "description": "Parâmetros adicionais para a execução"
+                  }
+                },
+                "required": [
+                  "comando"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ação executada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "resultado": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
